@@ -1,0 +1,90 @@
+[
+  {
+    "model": "travels.traveler",
+    "pk": 1,
+    "fields": { "first_name": "Anna", "last_name": "Kowalska", "email": "anna.kowalska@example.com", "phone": "+48 600 100 200" }
+  },
+  {
+    "model": "travels.traveler",
+    "pk": 2,
+    "fields": { "first_name": "Marek", "last_name": "Nowak", "email": "marek.nowak@example.com", "phone": "+48 501 200 300" }
+  },
+  {
+    "model": "travels.traveler",
+    "pk": 3,
+    "fields": { "first_name": "Ewa", "last_name": "Wiśniewska", "email": "ewa.wisniewska@example.com", "phone": "" }
+  },
+  {
+    "model": "travels.traveler",
+    "pk": 4,
+    "fields": { "first_name": "Piotr", "last_name": "Zając", "email": "piotr.zajac@example.com", "phone": "+48 512 345 678" }
+  },
+  {
+    "model": "travels.trip",
+    "pk": 1,
+    "fields": {
+      "destination": "Rzym",
+      "description": "Klasyczna wycieczka do Wiecznego Miasta – Koloseum, Forum Romanum i Watykan.",
+      "start_date": "2026-06-01",
+      "end_date": "2026-06-08",
+      "price": "1500.00",
+      "max_participants": 10
+    }
+  },
+  {
+    "model": "travels.trip",
+    "pk": 2,
+    "fields": {
+      "destination": "Paryż",
+      "description": "Wieża Eiffla, Luwr i romantyczne spacery nad Sekwaną.",
+      "start_date": "2026-07-15",
+      "end_date": "2026-07-22",
+      "price": "2200.00",
+      "max_participants": 8
+    }
+  },
+  {
+    "model": "travels.trip",
+    "pk": 3,
+    "fields": {
+      "destination": "Barcelona",
+      "description": "Sagrada Família, Park Güell i plaże Costa Brava.",
+      "start_date": "2026-09-05",
+      "end_date": "2026-09-12",
+      "price": "1800.00",
+      "max_participants": 12
+    }
+  },
+  {
+    "model": "travels.trip",
+    "pk": 4,
+    "fields": {
+      "destination": "Wiedeń",
+      "description": "Muzea, pałace i słynne kawiarnie wiedeńskie.",
+      "start_date": "2026-10-10",
+      "end_date": "2026-10-14",
+      "price": "950.00",
+      "max_participants": 6
+    }
+  },
+  {
+    "model": "travels.reservation",
+    "pk": 1,
+    "fields": { "trip": 1, "traveler": 1, "status": "confirmed", "notes": "", "created_at": "2026-04-01T10:00:00Z" }
+  },
+  {
+    "model": "travels.reservation",
+    "pk": 2,
+    "fields": { "trip": 1, "traveler": 2, "status": "pending", "notes": "Proszę o miejsce przy oknie w autokarze.", "created_at": "2026-04-02T11:00:00Z" }
+  },
+  {
+    "model": "travels.reservation",
+    "pk": 3,
+    "fields": { "trip": 2, "traveler": 3, "status": "confirmed", "notes": "", "created_at": "2026-04-03T09:00:00Z" }
+  },
+  {
+    "model": "travels.reservation",
+    "pk": 4,
+    "fields": { "trip": 3, "traveler": 4, "status": "pending", "notes": "", "created_at": "2026-04-05T14:00:00Z" }
+  }
+]

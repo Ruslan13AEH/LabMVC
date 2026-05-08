@@ -1,0 +1,113 @@
+{% extends "travels/base.html" %}
+{% block title %}{{ trip.destination }} – Organizacja podróży{% endblock %}
+{% block nav_trips %}active{% endblock %}
+
+{% block content %}
+<div class="mb-3">
+  <a href="{% url 'trip_list' %}" class="btn btn-sm btn-outline-secondary">
+    <i class="bi bi-arrow-left me-1"></i>Powrót do listy
+  </a>
+</div>
+
+<!-- Karta szczegółów wycieczki -->
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+    <h4 class="mb-0"><i class="bi bi-geo-alt-fill me-2"></i>{{ trip.destination }}</h4>
+    <div>
+      <a href="{% url 'trip_edit' trip.pk %}" class="btn btn-sm btn-light me-1">
+        <i class="bi bi-pencil me-1"></i>Edytuj
+      </a>
+      <a href="{% url 'trip_delete' trip.pk %}" class="btn btn-sm btn-danger">
+        <i class="bi bi-trash me-1"></i>Usuń
+      </a>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-sm-6 col-lg-3">
+        <p class="text-muted mb-1 small">Data rozpoczęcia</p>
+        <p class="fw-semibold">{{ trip.start_date }}</p>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <p class="text-muted mb-1 small">Data zakończenia</p>
+        <p class="fw-semibold">{{ trip.end_date }}</p>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <p class="text-muted mb-1 small">Cena</p>
+        <p class="fw-semibold">{{ trip.price }} PLN</p>
+      </div>
+      <div class="col-sm-6 col-lg-3">
+        <p class="text-muted mb-1 small">Wolne miejsca</p>
+        {% with spots=trip.spots_left %}
+          {% if spots > 0 %}
+            <p class="fw-semibold text-success">{{ spots }} z {{ trip.max_participants }}</p>
+          {% else %}
+            <p class="fw-semibold text-danger">Brak wolnych miejsc</p>
+          {% endif %}
+        {% endwith %}
+      </div>
+      {% if trip.description %}
+      <div class="col-12">
+        <p class="text-muted mb-1 small">Opis</p>
+        <p>{{ trip.description }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<!-- Rezerwacje -->
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5><i class="bi bi-calendar-check me-2"></i>Rezerwacje ({{ reservations.count }})</h5>
+  <a href="{% url 'reservation_create' trip.pk %}" class="btn btn-sm btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Dodaj rezerwację
+  </a>
+</div>
+
+{% if reservations %}
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Podróżnik</th>
+          <th>E-mail</th>
+          <th>Telefon</th>
+          <th class="text-center">Status</th>
+          <th>Uwagi</th>
+          <th class="text-center">Akcje</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for res in reservations %}
+        <tr>
+          <td class="fw-semibold">{{ res.traveler }}</td>
+          <td><a href="mailto:{{ res.traveler.email }}">{{ res.traveler.email }}</a></td>
+          <td>{{ res.traveler.phone|default:"-" }}</td>
+          <td class="text-center">
+            {% if res.status == 'confirmed' %}
+              <span class="badge bg-success">Potwierdzona</span>
+            {% elif res.status == 'pending' %}
+              <span class="badge bg-warning text-dark">Oczekująca</span>
+            {% else %}
+              <span class="badge bg-danger">Anulowana</span>
+            {% endif %}
+          </td>
+          <td>{{ res.notes|default:"-" }}</td>
+          <td class="text-center">
+            <a href="{% url 'reservation_delete' res.pk %}" class="btn btn-sm btn-outline-danger" title="Usuń">
+              <i class="bi bi-trash"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="alert alert-light border">
+  <i class="bi bi-info-circle me-1"></i>Brak rezerwacji dla tej wycieczki.
+</div>
+{% endif %}
+{% endblock %}

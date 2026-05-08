@@ -1,0 +1,99 @@
+{% extends "travels/base.html" %}
+{% block title %}Wycieczki – Organizacja podróży{% endblock %}
+{% block nav_trips %}active{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2><i class="bi bi-map me-2"></i>Wycieczki</h2>
+  <a href="{% url 'trip_create' %}" class="btn btn-primary">
+    <i class="bi bi-plus-lg me-1"></i>Dodaj wycieczkę
+  </a>
+</div>
+
+<!-- Formularz wyszukiwania / filtrowania -->
+<div class="card mb-4">
+  <div class="card-body">
+    <form method="get" class="row g-2 align-items-end">
+      <div class="col-md-4">
+        <label class="form-label fw-semibold">Cel podróży</label>
+        <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="np. Rzym">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Od daty</label>
+        <input type="date" name="start_from" value="{{ start_from }}" class="form-control">
+      </div>
+      <div class="col-md-3">
+        <label class="form-label fw-semibold">Do daty</label>
+        <input type="date" name="start_to" value="{{ start_to }}" class="form-control">
+      </div>
+      <div class="col-md-2 d-flex gap-2">
+        <button type="submit" class="btn btn-outline-primary w-100">
+          <i class="bi bi-search"></i> Szukaj
+        </button>
+        <a href="{% url 'trip_list' %}" class="btn btn-outline-secondary">
+          <i class="bi bi-x-lg"></i>
+        </a>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Lista wycieczek -->
+{% if trips %}
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead>
+        <tr>
+          <th>Cel podróży</th>
+          <th>Data rozpoczęcia</th>
+          <th>Data zakończenia</th>
+          <th class="text-end">Cena (PLN)</th>
+          <th class="text-center">Wolne miejsca</th>
+          <th class="text-center">Akcje</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for trip in trips %}
+        <tr>
+          <td>
+            <a href="{% url 'trip_detail' trip.pk %}" class="fw-semibold text-decoration-none">
+              {{ trip.destination }}
+            </a>
+          </td>
+          <td>{{ trip.start_date }}</td>
+          <td>{{ trip.end_date }}</td>
+          <td class="text-end">{{ trip.price }}</td>
+          <td class="text-center">
+            {% with spots=trip.spots_left %}
+              {% if spots > 0 %}
+                <span class="badge bg-success">{{ spots }} / {{ trip.max_participants }}</span>
+              {% else %}
+                <span class="badge bg-danger">Brak</span>
+              {% endif %}
+            {% endwith %}
+          </td>
+          <td class="text-center">
+            <a href="{% url 'trip_detail' trip.pk %}" class="btn btn-sm btn-outline-secondary" title="Szczegóły">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a href="{% url 'trip_edit' trip.pk %}" class="btn btn-sm btn-outline-primary" title="Edytuj">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <a href="{% url 'trip_delete' trip.pk %}" class="btn btn-sm btn-outline-danger" title="Usuń">
+              <i class="bi bi-trash"></i>
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<div class="alert alert-info">
+  <i class="bi bi-info-circle me-1"></i>
+  Nie znaleziono wycieczek pasujących do kryteriów wyszukiwania.
+</div>
+{% endif %}
+{% endblock %}
